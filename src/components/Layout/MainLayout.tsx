@@ -5,7 +5,6 @@ import {
   UserOutlined,
   LogoutOutlined,
   BarChartOutlined,
-  DashboardOutlined,
   TeamOutlined,
   MonitorOutlined,
   IdcardOutlined,
@@ -30,7 +29,7 @@ const MainLayout: React.FC = () => {
   const getSelectedKey = () => {
     if (location.pathname === '/employees') return 'employees';
     if (location.pathname === ROUTES.USER_MANAGE) return 'users';
-    return 'dashboard';
+    return 'employees'; // 默认选中员工管理
   };
 
   const [selectedKey, setSelectedKey] = useState(getSelectedKey());
@@ -90,15 +89,6 @@ const MainLayout: React.FC = () => {
   ];
 
   const menuItems = [
-    {
-      key: 'dashboard',
-      icon: <DashboardOutlined />,
-      label: '数据概览',
-      onClick: () => {
-        setSelectedKey('dashboard');
-        navigate(ROUTES.DASHBOARD);
-      },
-    },
     {
       key: 'hr',
       icon: <ApartmentOutlined />,

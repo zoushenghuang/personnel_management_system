@@ -23,7 +23,14 @@ public class UserService {
     }
     
     public Optional<User> getUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            // 加载用户角色
+            String roleCode = userRepository.findRoleCodeByUsername(username);
+            user.setRole(roleCode);
+        }
+        return userOpt;
     }
     
     public User saveUser(User user) {

@@ -34,16 +34,19 @@ public class AuthController {
             return ResponseEntity.status(401).body(Map.of("message", "用户名或密码错误"));
         }
         
-        String token = jwtUtil.generateToken(user.getUsername(), user.getRole());
+        // 如果role为null，使用默认值
+        String role = user.getRole() != null ? user.getRole() : "USER";
+        String token = jwtUtil.generateToken(user.getUsername(), role);
         
         Map<String, Object> response = new HashMap<>();
         response.put("message", "登录成功");
         response.put("token", token);
-        response.put("user", Map.of(
-            "id", user.getId(),
-            "username", user.getUsername(),
-            "role", user.getRole()
-        ));
+        
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("id", user.getId());
+        userInfo.put("username", user.getUsername());
+        userInfo.put("role", role);
+        response.put("user", userInfo);
         
         return ResponseEntity.ok(response);
     }

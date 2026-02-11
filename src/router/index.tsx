@@ -3,7 +3,6 @@ import { Navigate, type RouteObject } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import LoginPage from '../pages/Login';
 import MainLayout from '../components/Layout/MainLayout';
-import DashboardPage from '../pages/Dashboard';
 import UserManagePage from '../pages/UserManage';
 import EmployeePage from '../pages/Employee';
 
@@ -29,7 +28,7 @@ export const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: <DashboardPage />,
+        element: <Navigate to="/employees" replace />,
       },
       {
         path: 'employees',

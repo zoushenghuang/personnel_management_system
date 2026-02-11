@@ -34,9 +34,14 @@ export const useAuthStore = create<AuthState>()(
             return { success: false, message: response.message || '登录失败' };
           }
         } catch (error: any) {
+          console.error('Login error:', error);
+          // 优先使用后端返回的错误信息
+          const errorMessage = error.response?.data?.message 
+            || error.message 
+            || '登录失败，请检查网络连接';
           return { 
             success: false, 
-            message: error.response?.data?.message || '登录失败，请检查网络连接' 
+            message: errorMessage
           };
         }
       },

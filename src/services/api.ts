@@ -37,10 +37,14 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response?.status === 401) {
+    // 如果是登录接口的401错误，不要自动跳转，让调用方处理
+    const isLoginRequest = error.config?.url?.includes('/api/auth/login');
+    
+    if (error.response?.status === 401 && !isLoginRequest) {
       useAuthStore.getState().logout();
       window.location.href = '/login';
     }
+    
     return Promise.reject(error);
   }
 );
@@ -65,83 +69,6 @@ export const changePassword = async (oldPassword: string, newPassword: string) =
     oldPassword,
     newPassword,
   });
-  return response.data;
-};
-
-// 获取销售数据
-export const getSalesData = async () => {
-  const response = await api.get('/api/sales');
-  return response.data;
-};
-
-// 获取流量来源数据
-export const getTrafficSources = async () => {
-  const response = await api.get('/api/dashboard/traffic-sources');
-  return response.data;
-};
-
-// 获取访问数据
-export const getVisitData = async () => {
-  const response = await api.get('/api/dashboard/visit-data');
-  return response.data;
-};
-
-// 获取产品销售数据
-export const getProductSales = async () => {
-  const response = await api.get('/api/dashboard/product-sales');
-  return response.data;
-};
-
-// 获取流量来源详情
-export const getTrafficSourceDetail = async (id: number) => {
-  const response = await api.get(`/api/dashboard/traffic-sources/${id}`);
-  return response.data;
-};
-
-// 大屏数据接口
-export const getBigScreenStats = async () => {
-  const response = await api.get('/api/bigscreen/stats');
-  return response.data;
-};
-
-export const getIndustryDistribution = async () => {
-  const response = await api.get('/api/bigscreen/industry-distribution');
-  return response.data;
-};
-
-export const getProvinceDistribution = async () => {
-  const response = await api.get('/api/bigscreen/province-distribution');
-  return response.data;
-};
-
-export const getCityTrend = async () => {
-  const response = await api.get('/api/bigscreen/city-trend');
-  return response.data;
-};
-
-export const getIndustryAnalysis = async () => {
-  const response = await api.get('/api/bigscreen/industry-analysis');
-  return response.data;
-};
-
-// 系统监控接口
-export const getSystemInfo = async () => {
-  const response = await api.get('/api/system/info');
-  return response.data;
-};
-
-export const getCpuInfo = async () => {
-  const response = await api.get('/api/system/cpu');
-  return response.data;
-};
-
-export const getMemoryInfo = async () => {
-  const response = await api.get('/api/system/memory');
-  return response.data;
-};
-
-export const getDiskInfo = async () => {
-  const response = await api.get('/api/system/disk');
   return response.data;
 };
 

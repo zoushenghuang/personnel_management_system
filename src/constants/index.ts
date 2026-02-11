@@ -5,7 +5,7 @@ export const API_BASE_URL = '';
 export const ROUTES = {
   LOGIN: '/login',
   HOME: '/',
-  DASHBOARD: '/',
+  EMPLOYEES: '/employees',
   USER_MANAGE: '/users',
 } as const;
 
