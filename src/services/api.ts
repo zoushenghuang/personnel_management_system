@@ -31,16 +31,21 @@ api.interceptors.response.use(
       if (response.data.code === 200) {
         return { ...response, data: response.data.data };
       } else {
+        // 后端返回的业务错误，不要跳转登录页
         return Promise.reject(new Error(response.data.message || '请求失败'));
       }
     }
     return response;
   },
   (error) => {
+    console.error('API Error:', error);
+    
     // 如果是登录接口的401错误，不要自动跳转，让调用方处理
     const isLoginRequest = error.config?.url?.includes('/api/auth/login');
+    const isAuthRequest = error.config?.url?.includes('/api/auth/');
     
-    if (error.response?.status === 401 && !isLoginRequest) {
+    // 只有非认证接口的401错误才跳转登录页
+    if (error.response?.status === 401 && !isAuthRequest) {
       useAuthStore.getState().logout();
       window.location.href = '/login';
     }
